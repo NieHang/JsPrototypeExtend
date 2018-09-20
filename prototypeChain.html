@@ -16,11 +16,11 @@
      */
 
     function Person() {
-      this.colors = [1, 2, 3];
+      this.numbers = [1, 2, 3];
     }
 
     Person.prototype.getColor = function () {
-      return this.colors;
+      return this.numbers;
     }
 
     function Student() {}
@@ -31,7 +31,7 @@
 
     console.log(student.getColor()); // 1, 2, 3
 
-    student.colors.push(4);
+    student.numbers.push(4);
 
     let student2 = new Student();
 
