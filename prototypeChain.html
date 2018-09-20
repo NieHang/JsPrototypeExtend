@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>原型链</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 第一个问题: 这样写出的原型链，Person的colors属性，能够被子类Student的所有实例共享，且都有权利修改引用类型属性colors的值
+     * 第二个问题: 不能向父类Person传参数
+     */
+
+    function Person() {
+      this.colors = [1, 2, 3];
+    }
+
+    Person.prototype.getColor = function () {
+      return this.colors;
+    }
+
+    function Student() {}
+
+    Student.prototype = new Person();
+
+    let student = new Student();
+
+    console.log(student.getColor()); // 1, 2, 3
+
+    student.colors.push(4);
+
+    let student2 = new Student();
+
+    console.log(student2.getColor()); // 1, 2, 3, 4
+  </script>
+</body>
+
+</html>
