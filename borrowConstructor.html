@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>借用构造函数</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 为了解决普通原型链，父类引用类型属性值会被子类实例改变以及父类构造函数不能传参的问题。
+     * 出现了借用构造函数技术，也被称为伪造对象或经典继承
+     * 
+     * 存在的问题: 并不能函数复用，子类并不能访问到父类的方法，比如Student的实例并不能访问到Person的原型上的getName方法
+     */
+    function Person(name) {
+      this.name = name;
+      this.numbers = [1, 2, 3];
+    }
+
+    Person.prototype.getName = function () {
+      return this.name;
+    }
+
+    function Student(name, age) {
+      /**
+       * Person.call()方法一定要放在最上面，免得子类实例属性被父类属性覆盖。
+       * Person调用call方法，将Student作为this，这样Student也就有了Person中的所有属性和方法了。
+       * 每次生成Student的实例，都会调用Person.call方法，这样每一个实例都有自己的Person副本。
+       * 这样实例改变引用类型属性，Person的引用类型属性值就不会被改变了。
+       * 也可以向父类Person传参了
+       */ 
+      Person.call(this, name);
+
+      this.age = age;
+    }
+
+    let student = new Student('肥秃哥', 18);
+    console.log(student.numbers); // 1, 2, 3
+    student.numbers.push(4); // 修改student的numbers属性
+    console.log(student.numbers); // 1, 2, 3, 4
+
+    // 新建一个Student2实例
+    let student2 = new Student('肥秃哥2号', 20);
+    // student2的numbers还是[1, 2, 3], Person的numbers并没有受到student的numbers值的改变的影响
+    console.log(student2.numbers); // 1, 2, 3
+  </script>
+</body>
+
+</html>
