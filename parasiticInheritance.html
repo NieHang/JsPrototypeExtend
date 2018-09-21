@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>寄生式继承</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 创建一个仅用于封装继承过程的函数，该函数在内部以某种方式来增强对象，
+     * 最后再像真的是它做了所有工作一样返回对象
+     * 寄生式继承能够使新创建的对象获得传入对象的所有属性和方法，并且还能拥有自己的方法和属性
+     */
+    // 创建一个仅用于封装继承过程的函数
+    function object(obj) {
+      function F() {}
+      F.prototype = obj;
+      return new F();
+    };
+
+    function createAnother(obj) {
+      let clone = object(obj); // 调用object函数创建一个新对象
+      clone.sayHi = () => {    // 以某种方式增强对象
+        alert('hello world');
+      };
+      return clone;            // 最后返回对象
+    };
+
+    let person = {
+      name: '肥秃哥',
+      friends: ['肥秃哥1号', '肥秃哥2号']
+    };
+
+    person.showName = function () {
+      console.log(this.name);
+    };
+
+    let per1 = createAnother(person);
+    per1.sayHi();
+    per1.showName();
+  </script>
+</body>
+
+</html>
