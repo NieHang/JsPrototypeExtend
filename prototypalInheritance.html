@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>原型式继承</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 借助原型可以基于已有对象创建新对象，不必使用构造函数和创建自定义类型
+     * 这种方式创建的对象，只是对已有对象的一次浅拷贝
+     * 这种方式和Object.create()方法一样，只不过后者对原型式继承进行了规范和优化
+     * 如果只是单纯的想让两个对象相似的话，就可以使用这个构造函数，只不过，产生的实例会共享被复制对象的值
+     */
+    function object(obj) {
+      function F() {}
+      F.prototype = obj;
+      return new F();
+    }
+
+    let person = {
+      name: '肥秃哥',
+      friends: ['肥秃哥2号', '肥秃哥3号']
+    };
+
+    let person1 = object(person);
+    console.log(person1.name);
+
+    let person2 = Object.create(person, {
+      name: {
+        value: '大肥秃哥'
+      }
+    });
+    console.log(person2);
+  </script>
+</body>
+
+</html>
