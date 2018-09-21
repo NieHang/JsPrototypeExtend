@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>组合继承</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 为了解决借用构造函数技术 函数不能复用的问题。
+     * 在借用构造函数技术上加入原型链，这样父类的方法就可以被子类访问并使用了。
+     * 原型链解决函数不能复用的问题。
+     * 借用构造函数解决子类实例能够改变父类引用类型属性的值的问题。
+     * 组合继承结合了原型继承和借用构造函数技术的优点，是JavaScript中最常用的继承模式。
+     */
+    function Person(name) {
+      this.name = name;
+    }
+
+    Person.prototype.getName = function () {
+      return this.name;
+    }
+
+    function Student(name, age) {
+      Person.call(this, name);
+
+      this.age = age;
+    }
+
+    Student.prototype = new Person();
+
+    let student = new Student('肥秃哥', 18);
+    console.log(student.getName()); // 肥秃哥
+  </script>
+</body>
+
+</html>
