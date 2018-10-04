@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>寄生组合式继承</title>
+</head>
+<body>
+  <script>
+    function object(obj) {
+      function F () {};
+      F.prototype = obj;
+      return new F();
+    }
+
+    function Person(name) {
+      this.name = name;
+    };
+
+    Person.prototype.getName = function () {
+      return this.name;
+    };
+
+    function Student(name, skill) {
+      Person.call(this, name);
+      this.skill = skill;
+    };
+
+    function inheritPrototype(subType, superType) {
+      let prototype = object(superType.prototype); // 创建超类副本
+      prototype.constructor = subType; // 修正constructor指向
+      subType.prototype = prototype; // 将创建的超类副本赋值给子类型的原型
+    };
+    
+    inheritPrototype(Student, Person);
+
+    let s = new Student();
+    console.log(new Student('张三', 1));
+    console.log(s.__proto__.constructor instanceof Student);
+  </script>
+</body>
+</html>
