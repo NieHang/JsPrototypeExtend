@@ -19,7 +19,7 @@
       this.numbers = [1, 2, 3];
     }
 
-    Person.prototype.getColor = function () {
+    Person.prototype.getNumber = function () {
       return this.numbers;
     }
 
@@ -29,13 +29,13 @@
 
     let student = new Student();
 
-    console.log(student.getColor()); // 1, 2, 3
+    console.log(student.getNumber()); // 1, 2, 3
 
     student.numbers.push(4);
 
     let student2 = new Student();
 
-    console.log(student2.getColor()); // 1, 2, 3, 4
+    console.log(student2.getNumber()); // 1, 2, 3, 4
   </script>
 </body>
 
