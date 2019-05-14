@@ -13,10 +13,11 @@
     /**
      * 为了解决借用构造函数技术 函数不能复用的问题。
      * 在借用构造函数技术上加入原型链，这样父类的方法就可以被子类访问并使用了。
-     * 原型链解决函数不能复用的问题。
+     * 原型链解决函数不能复用的问题以及引用类型数据被生成的实例共享的问题。
      * 借用构造函数解决子类实例能够改变父类引用类型属性的值的问题。
      * 组合继承结合了原型继承和借用构造函数技术的优点，是JavaScript中最常用的继承模式。
      */
+    // 缺点：Person被new了两次，没有必要
     function Person(name) {
       this.name = name;
     }
@@ -34,7 +35,54 @@
     Student.prototype = new Person();
 
     let student = new Student('肥秃哥', 18);
-    console.log(student.getName()); // 肥秃哥
+    // 肥秃哥
+    console.log(student.getName());
+
+    // 优化1,解决Person被new两次的问题，但是会导致生成的实例无法被判断为是父类还是子类生成
+    function Person1(name) {
+      this.name = name;
+    }
+
+    Person1.prototype.getName = function () {
+      return this.name;
+    }
+
+    function Student1(name, age) {
+      Person1.call(this, name);
+
+      this.age = age;
+    }
+
+    // 优化点
+    Student1.prototype = Person1.prototype;
+
+    let student1 = new Student1('肥秃哥1', 18);
+    console.log(student1.getName());
+
+    /**
+      优化2，解决生成的实例student2的constructor是父类对象Person2的问题
+    */
+    function Person2(name) {
+      this.name = name;
+    }
+
+    Person2.prototype.getName = function () {
+      return this.name;
+    }
+
+    function Student2(name, age) {
+      Person2.call(this, name);
+
+      this.age = age;
+    }
+
+    // Object.create创建的对象的原型对象是传入的参数，也就是Person2.prototype
+    // 这里将Student2.prototype和Person2.prototype分开
+    Student2.prototype = Object.create(Person2.prototype);
+    Student2.prototype.constructor = Student2;
+
+    let student2 = new Student2('肥秃哥2', 18);
+    console.log(student2.getName());
   </script>
 </body>
 
