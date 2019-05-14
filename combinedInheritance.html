@@ -77,7 +77,9 @@
     }
 
     // Object.create创建的对象的原型对象是传入的参数，也就是Person2.prototype
-    // 这里将Student2.prototype和Person2.prototype分开
+    // 使用Object.create的目的是将Student2.prototype和Person2.prototype分开，让两者不公用同一个原型对象
+    // 这样的话，Student2的原型对象就是Object.create创建的对象，Person2的原型对象就是Person2.prototype
+    // 手动将Student2的原型对象的constructor修改为Student2,并不会影响到Person2，这样就可以判断实例是由哪个类生成的
     Student2.prototype = Object.create(Person2.prototype);
     Student2.prototype.constructor = Student2;
 
